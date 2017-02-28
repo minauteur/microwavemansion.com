@@ -251,7 +251,7 @@
         //begin querying enemy array for length to check spawn conditions
         if (enemies.length <= 0) {
             var newRat = new Enemy();
-            newRat.x = Math.floor(Math.random() * width / 2);
+            newRat.x = Math.floor(Math.random() * (width/1.8));
             newRat.y = -104;
             //newRat.health = 100;
             enemies.push(newRat);
@@ -259,14 +259,14 @@
         //set default enemy movement/increment y to simulate enemies "falling"
         for (var i = 0; i < enemies.length; i++) {
             var enemy = enemies[i];
-            enemy.y = enemy.y + 2;
-            enemy.x = enemy.x++;
+            enemy.x = enemy.x + Math.cos(0.01*degrees) * 1.5;
+            enemy.y = enemy.y + Math.sin(0.05*degrees)+2;
             enemy.degrees = degrees;
             //check to see if they have fallen out of view-->remove if so
-            if (enemy.y > c.height) {
+            if ((enemy.y > c.height) || (enemy.x < -100) || (enemy.x> width)) {
                 enemies.splice(i, 1);
             }
-            //include weapon firing conditions/drawing updates PRIOR to...
+                      //include weapon firing conditions/drawing updates PRIOR to...
             //drawing enemies to achieve proper appearance during gameplay...
             //should appear in this order back-front: cat-->laser-->mouse
             if (cat.weapon.active) {
