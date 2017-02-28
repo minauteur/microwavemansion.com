@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!-- saved from url=(0067)https://www.kirupa.com/snippets/examples/move_to_click_position.htm -->
+<html class=" -webkit-">
+<head>
+	<script class="jsbin" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta content="en-us" http-equiv="Content-Language">
+	<meta content="lasers" name="keywords">
+	<meta content="Cats... with lasers... in space." name="description">
+<title>Mach5</title>
+<style type="text/css">
+	html {
+		width: 100%;
+		height: 100%;
+		margin:  0px auto;
+    padding: 0px auto;
+	}
+	body {
+		background-image:url('spacelarge.jpg');
+		background-repeat: repeat;
+		width: 100%;
+		height: 100%;
+		margin:  0px auto;
+    padding: 0px auto;
+		overflow: hidden;
+	}
+	#cat {
+		position: absolute;
+		background-image:url('cat.gif');
+		width: 546px;
+		height: 542px;
+		bottom: 0px;
+		right: 0px;
+		z-index: -1;
+		margin:  0px auto;
+		padding: 0px auto;
+	}
+	#ratdiv {
+		position: absolute;
+		/*top: 0;
+		right: 0;
+		height: 20%;*/
+		margin:  0px auto;
+		z-index: -1;
+		/*animation: marquee 15s infinite linear;
+		animation: upDown 1.5s alternate infinite ease-in-out;*/
+	}
+	.rat{
+	position:absolute;
+	left:-210px;
+	height:208px;
+	width: 200px;
+	animation: SpaceWalk linear 10s;
+  animation-iteration-count: infinite;
+  /*transform-origin: 50% 50%;*/
+  -webkit-animation: SpaceWalk linear 10s;
+  -webkit-animation-iteration-count: infinite;
+  /*-webkit-transform-origin: 50% 50%;*/
+  -moz-animation: SpaceWalk linear 10s;
+  -moz-animation-iteration-count: infinite;
+  /*-moz-transform-origin: 50% 50%;*/
+  -o-animation: SpaceWalk linear 10s;
+  -o-animation-iteration-count: infinite;
+  /*-o-transform-origin: 50% 50%;*/
+  -ms-animation: SpaceWalk linear 10s;
+  -ms-animation-iteration-count: infinite;
+  /*-ms-transform-origin: 50% 50%;*/
+}
+
+@keyframes SpaceWalk{
+  0% {
+    transform:  translate(0,-57px)  rotate(-31deg) ;
+  }
+  20% {
+    transform:  translate(600px,-20px)  rotate(44deg) ;
+  }
+  51% {
+    transform:  translate(1200px,140px)  rotate(180deg) ;
+  }
+  80% {
+    transform:  translate(1800px,-45px)  rotate(354deg) ;
+  }
+  100% {
+    transform:  translate(2400px,-93px)  rotate(400deg) ;
+  }
+}
+
+@-moz-keyframes SpaceWalk{
+	0% {
+    transform:  translate(0,-57px)  rotate(-31deg) ;
+  }
+  20% {
+    transform:  translate(600px,-20px)  rotate(44deg) ;
+  }
+  51% {
+    transform:  translate(1200px,140px)  rotate(180deg) ;
+  }
+  80% {
+    transform:  translate(1800px,-45px)  rotate(354deg) ;
+  }
+  100% {
+    transform:  translate(2400px,-93px)  rotate(400deg) ;
+  }
+	}
+
+@-webkit-keyframes SpaceWalk {
+	0% {
+    transform:  translate(0,-57px)  rotate(-31deg) ;
+  }
+  20% {
+    transform:  translate(600px,-20px)  rotate(44deg) ;
+  }
+  51% {
+    transform:  translate(1200px,140px)  rotate(180deg) ;
+  }
+  80% {
+    transform:  translate(1800px,-45px)  rotate(354deg) ;
+  }
+  100% {
+    transform:  translate(2400px,-93px)  rotate(400deg) ;
+  }
+	}
+
+@-o-keyframes SpaceWalk {
+	0% {
+    transform:  translate(0,-57px)  rotate(-31deg) ;
+  }
+  20% {
+    transform:  translate(600px,-20px)  rotate(44deg) ;
+  }
+  51% {
+    transform:  translate(1200px,140px)  rotate(180deg) ;
+  }
+  80% {
+    transform:  translate(1800px,-45px)  rotate(354deg) ;
+  }
+  100% {
+    transform:  translate(2400px,-93px)  rotate(400deg) ;
+  }
+	}
+
+@-ms-keyframes SpaceWalk {
+	0% {
+    transform:  translate(0,-57px)  rotate(-31deg) ;
+  }
+  20% {
+    transform:  translate(600px,-20px)  rotate(44deg) ;
+  }
+  51% {
+    transform:  translate(1200px,140px)  rotate(180deg) ;
+  }
+  80% {
+    transform:  translate(1800px,-45px)  rotate(354deg) ;
+  }
+  100% {
+    transform:  translate(2400px,-93px)  rotate(400deg) ;
+  }
+	}
+	#ratpic {
+		/*animation: marquee 15s infinite linear;*/
+		width: 100%;
+
+	}
+	#canvas {
+		z-index: 0;
+	}
+
+	@keyframes marquee {
+to { transform:translateX(900%);}
+}
+@keyframes upDown {
+  to { transform: translateY(100px);}
+}
+</style>
+</head>
+<body>
+
+<img class="rat" id="ratdiv" src="smspacerat.png">
+
+	<div id="cat"></div>
+	<canvas id="canvas"></canvas>
+
+	<!-- <script src="./lasermock1/prefixfree.min.js.download"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> -->
+<script>
+//self-call for responsive canvas adjustment on window resize
+(function(){
+	// shim layer with setTimeout fallback for x-browser compatibility
+	window.requestAnimFrame = (function(){
+		return  window.requestAnimationFrame       ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame    ||
+			window.oRequestAnimationFrame      ||
+			window.msRequestAnimationFrame     ||
+		function(/* function */ callback, /* DOM Element */ element){
+						return window.setTimeout(callback, 1000 / 60);
+		};
+	})();
+	window.cancelRequestAnimFrame = (function(){
+		return window.cancelAnimationFrame            ||
+			window.webkitCancelRequestAnimationFrame    ||
+			window.mozCancelRequestAnimationFrame         ||
+			window.oCancelRequestAnimationFrame        ||
+			window.msCancelRequestAnimationFrame        ||
+		clearTimeout;
+	})();
+	//Begin high level declarations
+	var canvas = document.getElementById('canvas'),
+  	context = canvas.getContext('2d');
+	var cat;
+	var leftEye, rightEye;
+	var leftLaserOrigin = {x:0,y:0};
+	var rightLaserOrigin = {x:0,y:0};
+	var leftEyeInit = {y:220,x:100};
+	var rightEyeInit = {y:220,x:100};
+	var amount = 0;
+	var request;
+	// var clickCount = true; <--may re-implement in the future to extend laser functionality
+	var rat = new Image();
+	rat.src = "smspacerat.png";
+	// resize the canvas to fill browser window dynamically
+	window.addEventListener('resize', resizeCanvas, false);
+	init();
+
+  function resizeCanvas() {
+		console.log('resize detected, adjusting canvas...')
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+		//get cat's new position on resize
+		console.log('updating cat location...')
+		cat = document.getElementById('cat').getBoundingClientRect();
+
+		if (cat == null) console.log('unable to load coordinates of cat div!');
+		console.log('cat update successful...');
+		leftLaserOrigin.x = cat.right-322;
+		leftLaserOrigin.y = cat.bottom-228;
+		rightLaserOrigin.x = cat.right-179;
+		rightLaserOrigin.y = cat.bottom-205;
+
+		// animate();
+		drawRat();
+
+	}
+
+	resizeCanvas();
+
+	function init(){
+		$('#canvas').on("touchstart click", function(e) {
+			e.stopPropagation();
+			e.preventDefault();
+			// leftLaserOrigin.x = cat.right-322;
+			// leftLaserOrigin.y = cat.bottom-228;
+			// rightLaserOrigin.x = cat.right-179;
+			// rightLaserOrigin.y = cat.bottom-205;
+			leftEyeInit.x = e.pageX;
+			leftEyeInit.y = e.pageY;
+			rightEyeInit.x = e.pageX;
+			rightEyeInit.y = e.pageY;
+			animate();
+			// clickCount = false;
+			return false;
+		});
+	}
+
+	function animate() {
+		request = requestAnimFrame(animate, canvas);
+		drawLasers();
+		drawRat();
+	}
+
+	function drawRat(){
+		context.drawImage(rat, 50,50, 150,156);
+		// amount += 0.10;
+		// if (amount > 1) amount = 1;
+	}
+
+	function drawLasers(){
+		console.log('finding cat...');
+		cat = document.getElementById('cat').getBoundingClientRect();
+	 	leftEye = {x:cat.right-322,y:cat.bottom-228};
+		rightEye = {x:cat.right-179,y:cat.bottom-205};
+		if (cat == null) console.log('unable to load coordinates of cat div!');
+		console.log('eye coordinates...');
+		console.log('left - x:' + leftEye.x + ', y:' + leftEye.y);
+		console.log('right - x:'+ rightEye.x + ', y:' + rightEye.y);
+		console.log('beginning left laser draw...');
+		amount += .05; //controls duration
+		if (amount > 1) amount =1;
+		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.lineWidth=20;
+		context.strokeStyle="red";
+		context.lineCap="round";
+		context.beginPath();
+		context.moveTo(leftLaserOrigin.x, leftLaserOrigin.y);
+		var leftLaserTarget = {
+			x: leftLaserOrigin.x + (leftEyeInit.x - leftLaserOrigin.x) * amount,
+			y: leftLaserOrigin.y + (leftEyeInit.y - leftLaserOrigin.y) * amount
+		};
+		console.log('Left Eye Target: x:'+leftLaserTarget.x+', y:'+leftLaserTarget.y);
+		console.log('Left Eye Origin: x:'+leftLaserOrigin.x+', y:'+leftLaserOrigin.y);
+		console.log('Drawing Left Laser...')
+		context.lineTo(leftLaserTarget.x , leftLaserTarget.y);
+		context.stroke();
+		context.lineWidth=12;
+		context.strokeStyle="#ff6363";
+		context.lineCap="round";
+		context.stroke();
+		context.lineWidth=5;
+		context.strokeStyle="white";
+		context.lineCap="round";
+		context.stroke();
+		console.log('Left laser complete, beginning right laser draw...');
+		context.moveTo(rightLaserOrigin.x, rightLaserOrigin.y);
+		var rightLaserTarget = {
+			x: rightLaserOrigin.x + (rightEyeInit.x - rightLaserOrigin.x) * amount,
+			y: rightLaserOrigin.y + (rightEyeInit.y - rightLaserOrigin.y) * amount
+		};
+		console.log('Right Eye Target - x:' + rightLaserTarget.x + ', y:' + rightLaserTarget.y);
+		console.log('Right Eye Origin - x:' + rightLaserOrigin.x + ', y:' + rightLaserOrigin.y);
+		console.log('Drawing Right Laser...');
+		context.lineWidth=20;
+		context.strokeStyle="red";
+		context.lineCap="round";
+		context.lineTo(rightLaserTarget.x, rightLaserTarget.y)
+		context.stroke();
+		context.lineWidth=12;
+		context.strokeStyle="#ff6363";
+		context.lineCap="round";
+		context.stroke();
+		context.lineWidth=5;
+		context.strokeStyle="white";
+		context.lineCap="round";
+		context.stroke();
+		if(rightLaserTarget.x === rightEyeInit.x && rightLaserTarget.y === rightEyeInit.y) {
+			cancelRequestAnimFrame(request);
+			console.log('Shots fired!!');
+			request = null;
+			amount = 0;
+		}
+	}
+})();
+</script>
+</body>
+</html>

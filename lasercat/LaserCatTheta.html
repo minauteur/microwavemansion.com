@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://austingray.com/lasercat/ -->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>LaserCat Beta GammaRay</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+    <style type="text/css">
+      body {
+        width:100%;
+        height:100%;
+        margin: 0 auto;
+        overflow: hidden;
+        background:#000000;
+        padding:0 auto;
+      }
+      #canvas{
+        display:block;
+        width:100%;
+        height:100%;
+        margin:0 auto;
+        padding: 0 auto;
+
+        background-image:url('spacelarge.jpg');
+        background-repeat: repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      (function(){
+
+        // https://github.com/mrdoob/stats.js
+        var stats = new Stats();
+        stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild( stats.dom );
+
+        // setup
+        var canvas = document.getElementById('canvas');
+
+        var ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        var delta = 0;
+        window.addEventListener('resize', resizeCanvas, false);
+        window.onload = function(){
+
+          cat.weapon.fire = function() {
+            cat.weapon.speed = 0.05;
+            cat.weapon.active = true;
+          }
+          cat.weapon.update = function() {
+            cat.weapon.speed += 0.05;
+            if (cat.weapon.speed > 1) {
+              cat.weapon.speed = 1;
+            }
+
+            // laser 1
+            ctx.lineWidth=20;
+            ctx.strokeStyle="red";
+            ctx.lineCap="round";
+            ctx.beginPath();
+            ctx.moveTo(cat.weapon.l1sX, cat.weapon.l1sY);
+            cat.weapon.l1cX = cat.weapon.l1sX + (mouseCoords.x - cat.weapon.l1sX) * cat.weapon.speed;
+            cat.weapon.l1cY = cat.weapon.l1sY + (mouseCoords.y - cat.weapon.l1sY) * cat.weapon.speed;
+            ctx.lineTo(cat.weapon.l1cX, cat.weapon.l1cY);
+            ctx.stroke();
+            ctx.lineWidth=12;
+      		  ctx.strokeStyle="#ff6363";
+      		  ctx.lineCap="round";
+      		  ctx.stroke();
+      		  ctx.lineWidth=5;
+      		  ctx.strokeStyle="white";
+      		  ctx.lineCap="round";
+      		  ctx.stroke();
+
+            // laser 2
+            ctx.lineWidth=20;
+            ctx.strokeStyle="red";
+            ctx.lineCap="round";
+            // ctx.beginPath();
+            ctx.moveTo(cat.weapon.l2sX, cat.weapon.l2sY);
+            cat.weapon.l2cX = cat.weapon.l2sX + (mouseCoords.x - cat.weapon.l2sX) * cat.weapon.speed;
+            cat.weapon.l2cY = cat.weapon.l2sY + (mouseCoords.y - cat.weapon.l2sY) * cat.weapon.speed;
+            ctx.lineTo(cat.weapon.l2cX, cat.weapon.l2cY);
+            ctx.stroke();
+            ctx.lineWidth=12;
+      		  ctx.strokeStyle="#ff6363";
+      		  ctx.lineCap="round";
+      		  ctx.stroke();
+      		  ctx.lineWidth=5;
+      		  ctx.strokeStyle="white";
+      	    ctx.lineCap="round";
+      		  ctx.stroke();
+          }
+        }
+        function Sprite(name, imgsrc, width, height, x, y, weapon) {
+          this.name = name || 'Sprite';
+          this.image = new Image();
+          this.image.src = imgsrc;
+          this.width = width || 0;
+          this.height = height || 0;
+          this.x = x || 0;
+          this.y = y || 0;
+          this.weapon = weapon || false;
+        }
+      var cat = new Sprite('cat', 'cat.gif', 546, 562, canvas.width - 546, canvas.height - 562);
+        cat.weapon = {
+          type: 'laser',
+          speed: 0.05,
+          active: false,
+          l1sX: canvas.width - 321, // laser 1 start x
+          l1sY: canvas.height - 239, // laser 1 start y
+          l1cX: 0, // laser 1 current x
+          l1cY: 0, // laser 1 current y
+          l2sX: canvas.width - 178, // laser 2 start x
+          l2sY: canvas.height - 218, // laser 2 start y
+          l2cX: 0, // laser 2 current X
+          l2cY: 0, // laser 2 current y
+        }
+
+        // mouse
+        var mouseCoords = { x: 0, y: 0 };
+        var ratLoaded = false;
+        var degrees = 0;
+
+
+
+        // rat
+        var rat = new Sprite('rat', 'smspacerat.png', 200, 208, 0,0);
+        rat.onload = function(){
+          var degrees = 0;
+          ratLoaded = true;
+
+        };
+        // cat
+
+
+        // sprite list
+        var sprites = [rat, cat];
+
+        function animate() {
+          stats.begin();
+          degrees = (degrees + 1) %360;
+
+          render(degrees);
+          stats.end();
+
+          requestAnimationFrame(animate);
+        }
+
+
+        function render(degrees) {
+          delta += 0.05;
+          // clear it bro
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // loop through sprites, do necessary adjustments
+          for (var i = 0; i < sprites.length; i++) {
+            var sprite = sprites[i];
+            // update a sprite by its name
+            if (sprite.name === 'rat') {
+              //define the rat's path
+              rat.x = canvas.width + -Math.cos(delta*.05) * canvas.width;
+              rat.y = 150 + Math.sin(delta*.5) * 90;
+              //save context before applying rotation
+              ctx.save();
+              //increment degrees using the animation loop%360 and inform rotation by this value
+              ctx.scale(.5,.5);
+              ctx.translate(rat.x + rat.width / 2, rat.y + rat.height / 2);
+              ctx.rotate(degrees * Math.PI / 180);
+              ctx.drawImage(rat.image, 0, 0, rat.width, rat.height,
+                -rat.width / 2, -rat.height / 2, rat.width, rat.height);
+              ctx.rotate(-degrees * Math.PI / 180);
+              ctx.translate(-rat.x - rat.width / 2, -rat.y - rat.height / 2);
+              ctx.restore();
+            }
+            // else if(sprite.name === 'rat')
+            //draw sprites
+            // ctx.drawImage(sprite.image, 0, 0, sprite.width, sprite.height, sprite.x, sprite.y, sprite.width, sprite.height);
+            ctx.drawImage(cat.image, canvas.width-546, canvas.height-542, 546, 542);
+            // draw weapons
+            if (sprite.weapon.active) {
+              sprite.weapon.update();
+            }
+          }
+        }
+        function updateWeapons(){
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          cat.x = canvas.width-546;
+          cat.y = canvas.width-542;
+          cat.weapon.active = false;
+          cat.weapon.l1sX = canvas.width - 321;
+          cat.weapon.l1sY = canvas.height - 239;
+          cat.weapon.l2sX = canvas.width - 178;
+          cat.weapon.l2sY = canvas.height - 218;
+          cat.weapon.l1cX = 0;
+          cat.weapon.l1cy = 0;
+          cat.weapon.l2cx = 0;
+          cat.weapon.l2cy = 0;
+        }
+
+
+        canvas.addEventListener('click', function(e) {
+          mouseCoords.x = e.pageX;
+          mouseCoords.y = e.pageY;
+          cat.weapon.fire();
+        });
+        function resizeCanvas(){
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          render();
+          updateWeapons();
+        }
+
+        animate();
+
+      })();
+  </script>
+  <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;">
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas>
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas>
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas>
+  </div>
+</body>
+</html>

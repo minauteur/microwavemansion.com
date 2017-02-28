@@ -1,0 +1,126 @@
+body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  padding: 0 auto;
+  background-image: url(http://microwavemansion.com/lasercat/spacelarge.jpg);
+  background-repeat: repeat;
+  min-width:542px;
+}
+.backgroundimg {
+  position: fixed;
+  padding: 0 auto;
+  margin: 0 auto;
+  height: 100%;
+  width: 100%;
+  background-repeat: repeat;
+}
+#back1 {
+  background: url("http://microwavemansion.com/lasercat/spacelarge.jpg") repeat center scroll;
+  z-index: 0;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#back2 {
+  background: url("http://microwavemansion.com/lasercat/outer-space-stars.jpeg") repeat center scroll;
+  z-index: -1;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#back3 {
+  background: url("http://microwavemansion.com/lasercat/spacetile.jpg") repeat center scroll;
+  z-index: -2;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#back4 {
+  background: url("http://microwavemansion.com/lasercat/stars.gif") repeat center scroll;
+  z-index: -3;
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@keyframes backgroundchangeFadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(6);
+  }
+}
+@-webkit-keyframes backgroundchangeFadeInOut {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(5);
+  }
+}
+#backgroundchange div:nth-of-type(1) {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation-delay: 0s;
+  -webkit-animation-delay: 0s;
+}
+#backgroundchange div:nth-of-type(2) {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity:0;
+  animation-delay: 6s;
+  -webkit-animation-delay: 6s;
+}
+#backgroundchange div:nth-of-type(3) {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation-delay: 12s;
+  -webkit-animation-delay: 12s;
+}
+#backgroundchange div:nth-of-type(4) {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation-delay: 18s;
+  -webkit-animation-delay: 18s;
+}
+#backgroundchange div {
+  animation-name: backgroundchangeFadeInOut;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-duration: 24s;
+  -webkit-animation-name: backgroundchangeFadeInOut;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-duration: 24s;
+}
+#canvas {
+  display: block;
+  position: fixed;
+  margin: 0 auto;
+  padding: 0 auto;
+  background-image: none !important;
+}

@@ -1,0 +1,10 @@
+Breakout/Space Invaders Mashup.
+Follow the MDN JS/Gamedev tutorial,
+https://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript
+and incorporate this example
+http://labs.hyperandroid.com/static/CAAT-Samples/demos/demo1/path.html
+to make the laser affect the momentum of the ball (think laser as spline on bezier)
+referencing these
+http://paperjs.org/tutorials/animation/creating-animations/
+http://chrisbateman.github.io/impetus/
+for the momentum/animation legup.

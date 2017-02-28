@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://austingray.com/lasercat/ -->
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>LaserCat Beta GammaRay</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+    <style type="text/css">
+      body {
+        margin: 0 auto;
+        overflow: hidden;
+        background:#000000;
+        padding:0 auto;
+      }
+      #canvas{
+        display:block;
+        width:100%;
+        height:100%;
+        margin:0 auto;
+        padding: 0 auto;
+
+        background-image:url('spacelarge.jpg');
+        background-repeat: repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script>
+      (function(){
+
+        // https://github.com/mrdoob/stats.js
+        var stats = new Stats();
+        stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild( stats.dom );
+
+        // setup
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext("2d");
+        var delta = 0;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // mouse
+        var mouseCoords = { x: 0, y: 0 };
+
+        function Sprite(name, imgsrc, width, height, x, y, weapon) {
+          this.name = name || 'Sprite';
+          this.image = new Image();
+          this.image.src = imgsrc;
+          this.width = width || 0;
+          this.height = height || 0;
+          this.x = x || 0;
+          this.y = y || 0;
+          this.weapon = weapon || false;
+        }
+
+        // rat
+        var rat = new Sprite('rat', 'smspacerat.png', 100, 104, 0, 0);
+
+        // cat
+        var cat = new Sprite('cat', 'cat.gif', 546, 562, canvas.width - 546, canvas.height - 562);
+        cat.weapon = {
+          type: 'laser',
+          speed: 0.05,
+          active: false,
+          l1sX: cat.x + 225, // laser 1 start x
+          l1sY: cat.y + 313, // laser 1 start y
+          l1cX: 0, // laser 1 current x
+          l1cY: 0, // laser 1 current y
+          l2sX: cat.x + 368, // laser 2 start x
+          l2sY: cat.y + 335, // laser 2 start y
+          l2cX: 0, // laser 2 current X
+          l2cY: 0 // laser 2 current y
+        }
+        cat.weapon.fire = function() {
+          cat.weapon.speed = 0.05;
+          cat.weapon.active = true;
+        }
+        cat.weapon.update = function() {
+          cat.weapon.speed += 0.05;
+          if (cat.weapon.speed > 1) {
+            cat.weapon.speed = 1;
+          }
+
+          // laser 1
+          ctx.lineWidth=20;
+          ctx.strokeStyle="red";
+          ctx.lineCap="round";
+          ctx.beginPath();
+          ctx.moveTo(cat.weapon.l1sX, cat.weapon.l1sY);
+          cat.weapon.l1cX = cat.weapon.l1sX + (mouseCoords.x - cat.weapon.l1sX) * cat.weapon.speed;
+          cat.weapon.l1cY = cat.weapon.l1sY + (mouseCoords.y - cat.weapon.l1sY) * cat.weapon.speed;
+          ctx.lineTo(cat.weapon.l1cX, cat.weapon.l1cY);
+          ctx.stroke();
+          ctx.lineWidth=12;
+    		  ctx.strokeStyle="#ff6363";
+    		  ctx.lineCap="round";
+    		  ctx.stroke();
+    		  ctx.lineWidth=5;
+    		  ctx.strokeStyle="white";
+    		  ctx.lineCap="round";
+    		  ctx.stroke();
+
+          // laser 2
+          ctx.lineWidth=20;
+          ctx.strokeStyle="red";
+          ctx.lineCap="round";
+          ctx.beginPath();
+          ctx.moveTo(cat.weapon.l2sX, cat.weapon.l2sY);
+          cat.weapon.l2cX = cat.weapon.l2sX + (mouseCoords.x - cat.weapon.l2sX) * cat.weapon.speed;
+          cat.weapon.l2cY = cat.weapon.l2sY + (mouseCoords.y - cat.weapon.l2sY) * cat.weapon.speed;
+          ctx.lineTo(cat.weapon.l2cX, cat.weapon.l2cY);
+          ctx.stroke();
+          ctx.lineWidth=12;
+    		  ctx.strokeStyle="#ff6363";
+    		  ctx.lineCap="round";
+    		  ctx.stroke();
+    		  ctx.lineWidth=5;
+    		  ctx.strokeStyle="white";
+    	    ctx.lineCap="round";
+    		  ctx.stroke();
+        }
+
+        // sprite list
+        var sprites = [rat, cat];
+
+        function animate() {
+          stats.begin();
+          render();
+          stats.end();
+
+          requestAnimationFrame(animate);
+        }
+
+        function render() {
+          delta += 0.05;
+          // clear it bro
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          // loop through sprites, do necessary adjustments
+          for (var i = 0; i < sprites.length; i++) {
+            var sprite = sprites[i];
+            // update a sprite by its name
+            if (sprite.name === 'rat') {
+              //let's make our rat jump around
+              rat.x = 150 + Math.cos(delta) * 100;
+              rat.y = 150 + Math.sin(2*delta) / 2 * 150;
+            }
+            //draw sprites
+            ctx.drawImage(sprite.image, 0, 0, sprite.width, sprite.height, sprite.x, sprite.y, sprite.width, sprite.height);
+            // draw weapons
+            if (sprite.weapon.active) {
+              sprite.weapon.update();
+            }
+          }
+        }
+
+        canvas.addEventListener('click', function(e) {
+          mouseCoords.x = e.offsetX;
+          mouseCoords.y = e.offsetY;
+          cat.weapon.fire();
+        });
+
+        animate();
+
+      })();
+  </script>
+  <div style="position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;">
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas>
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: none;"></canvas>
+    <canvas width="80" height="48" style="width: 80px; height: 48px; display: block;"></canvas>
+  </div>
+</body>
+</html>
