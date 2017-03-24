@@ -74,17 +74,18 @@
     //---------------//
     //Game and assets//
     //---------------//
-    var cat, rat, ratBoxW, ratBoxH, delta, splode, splodeImage, score, degrees, sprites, enemies;
+    var cat, rat, ratBoxW, ratBoxH, delta, laserHit, laserHitImage, deathSplode, deathSplodeImage, score, degrees, sprites, enemies;
     score = 0;
     degrees = 0;
     sprites = [];
     enemies = [];
+    var fx = [];
     ratBoxW = 100;
     ratBoxH = 104;
     var h, op, rOpOut, rOpCore, rOpIn, rG, rB, laserL, laserR, deg, EyeL, EyeR;
 
     //sprite function for particle/laser effect on enemy hit
-    function sprite(options) {
+    function Sprite(options) {
         var that = {},
             frameIndex = 0,
             tickCount = 0,
@@ -97,6 +98,8 @@
         that.y = 0;
         that.image = options.image;
         that.scaleRatio = 1;
+        that.loop = options.loop;
+        that.opacity = options.opacity || 1;
 
         that.update = function() {
             //defining parameters for sprite update function
@@ -107,13 +110,15 @@
                 if (frameIndex < numberOfFrames - 1) {
                     // Go to the next frame
                     frameIndex += 1;
-                } else {
+                } else if (that.loop) {
                     frameIndex = 0;
                 }
             }
         };
         //defining parameters for sprite draw function
         that.render = function() {
+            ctx.save();
+            ctx.globalAlpha = that.opacity;
             that.ctx.drawImage(
                 that.image,
                 frameIndex * that.width / numberOfFrames,
@@ -124,6 +129,7 @@
                 that.y,
                 that.width / numberOfFrames * that.scaleRatio,
                 that.height * that.scaleRatio);
+            ctx.restore();
         };
         //let it know how wide the frames are within the spritemap
         that.getFrameWidth = function() {
@@ -131,18 +137,31 @@
         };
         return that;
     }
-    //defining image object and sprite options for animated sprite object on enemy hit
-    splodeImage = new Image();
-    splodeImage.src = 'splodepx.png';
-    splode = sprite({
+    //defining image object and sprite options for animated sprite object on enemy hit and death, respectively;
+    laserHitImage = new Image();
+    laserHitImage.src = 'laserHitpx.png';
+    laserHit = Sprite({
         ctx: c.getContext("2d"),
         width: 1500,
         height: 100,
-        image: splodeImage,
+        image: laserHitImage,
         numberOfFrames: 15,
         ticksPerFrame: 4,
-        scaleRatio: 1
+        scaleRatio: 1,
+        loop: true
     });
+    deathSplodeImage = new Image();
+    deathSplodeImage.src = 'deathsplosion.png';
+    deathSplode = Sprite({
+      ctx: c.getContext("2d"),
+      width: 17920,
+      height: 256,
+      image: deathSplodeImage,
+      numberOfFrames: 70,
+      ticksPerFrame: 4,
+      scaleRatio: 1,
+      loop: false
+    })
     //creating enemy object (defaults to rat imgsrc)
     function Enemy(name, imgsrc, x, y, width, height, degrees, weapon, health) {
         this.name = name || 'Enemy';
@@ -259,7 +278,7 @@
         //set default enemy movement/increment y to simulate enemies "falling"
         for (var i = 0; i < enemies.length; i++) {
             var enemy = enemies[i];
-            enemy.x = enemy.x + Math.cos(0.01*degrees) * 1.5;
+            enemy.x = enemy.x + Math.cos(0.01*degrees/180) * 1.5;
             enemy.y = enemy.y + Math.sin(0.05*degrees)+2;
             enemy.degrees = degrees;
             //check to see if they have fallen out of view-->remove if so
@@ -273,27 +292,72 @@
                 cat.weapon.fire(laserL, laserR);
                 //defining collision detection and results on true
                 if (hitTest(enemy.x, enemy.y, ratBoxW, ratBoxH, cat.weapon.l1c.x, cat.weapon.l2c.y)) {
-                    enemy.health = enemy.health - cat.weapon.damage;
-                    degrees = degrees - 3;
-                    enemy.y = enemy.y - 3;
-                    enemy.x = enemy.x--;
-                    splode.x = enemy.x - 95;
-                    splode.y = enemy.y - 90;
-                    splode.scaleRatio = 3;
-                    splode.update();
-                    splode.render();
-                    //check enemy health and remove from array if <=0
-                    if (enemy.health <= 0) {
-                        enemies.splice(i, 1);
-                        //git ye some
-                        score++;
-                    }
+                  enemy.health = enemy.health - cat.weapon.damage;
+                  degrees = degrees - 3;
+                  enemy.y = enemy.y - 3;
+                  enemy.x = enemy.x - 3;
+                  laserHit.x = enemy.x - 25;
+                  laserHit.y = enemy.y - 30;
+                  laserHit.scaleRatio = 1.5
+                  laserHit.render();
+                  laserHit.update();
                 }
-            }
-            //other enemy health conditionals
-            if (enemy.health < 100) {
-                //tie opacity to remaining health so that less health = faster rate from (.25,1)
-                enemy.opacity = oscillOpacity(enemy.health, degrees);
+                //other enemy health conditionals
+                if (enemy.health < 100 && enemy.health > 0) {
+                  //tie opacity to remaining health so that less health = faster rate from (.25,1)
+                  enemy.opacity = oscillOpacity(enemy.health, degrees);
+                }
+                //check enemy health and remove from array if <=0
+                if (enemy.health <= 0){
+                    var newFx = new Sprite({
+                      ctx: c.getContext("2d"),
+                      width: 17920,
+                      height: 256,
+                      image: new Image(),
+                      numberOfFrames: 70,
+                      ticksPerFrame: 1,
+                      scaleRatio: 1.5,
+                      loop: false
+                    })
+                    newFx.image.src = "deathsplosion.png"
+                    newFx.x = enemy.x - 210;
+                    newFx.y = enemy.y - 215;
+                    newFx.scaleRatio = 2;
+                    newFx.opacity = 0;
+                    //newRat.health = 100;
+                    if (fx.length<=3){
+                    fx.push(newFx);
+                  }
+                  enemies.splice(i, 1);
+                  //git ye some
+                  score++;
+                }
+                for (var i = 0; i < fx.length; i++) {
+                  var thisFx = fx[i];
+                  thisFx.opacity = .75;
+                  // var xDist = thisFx.x - enemy.x;
+                  // var yDist = thisFx.y - enemy.y;
+                  // var Dist = Math.sqrt(xDist*xDist + yDist*yDist);
+                  // thisFx.x = thisFx.x + getRandomIntInc(0, 2);
+                  // thisFx.y = thisFx.y + getRandomIntInc(0, 2);
+                  // if (Dist >= 400){
+                  //   fx.splice(i,1);
+                  // }
+                  if ((thisFx.y > c.height) || (thisFx.x < -100) || (thisFx.x> c.width) || (thisFx.frameIndex >= 70)) {
+                    fx.splice(i, 1);
+                  }
+                  // if ((enemy.y > c.height) || (enemy.x < -100) || (enemy.x> width)) {
+                  //     fx.splice(0, fx.length);
+                  // }
+                  thisFx.x = thisFx.x;
+                  thisFx.y = thisFx.y+1.75;
+                  thisFx.opacity = thisFx.opacity - .02;
+                  if (thisFx.opacity <= 0){
+                    fx.splice(0,1);
+                  }
+                  thisFx.render();
+                  thisFx.update();
+                }
             }
             //finally draw after all rat... er... that
             drawRats(enemy.image, ratBoxW, ratBoxH, enemy.x, enemy.y, enemy.degrees, enemy.opacity);

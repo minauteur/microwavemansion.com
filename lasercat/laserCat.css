@@ -5,7 +5,7 @@ body {
   margin: 0 auto;
   overflow: hidden;
   padding: 0 auto;
-  background-image: url(http://microwavemansion.com/lasercat/spacelarge.jpg);
+  background-image: url("spacelarge.jpg");
   background-repeat: repeat;
   min-width:542px;
 }
@@ -18,7 +18,7 @@ body {
   background-repeat: repeat;
 }
 #back1 {
-  background: url("http://microwavemansion.com/lasercat/spacelarge.jpg") repeat center scroll;
+  background: url("spacelarge.jpg") repeat center scroll;
   z-index: 0;
   position: fixed;
   display: block;
@@ -26,7 +26,7 @@ body {
   height: 100%;
 }
 #back2 {
-  background: url("http://microwavemansion.com/lasercat/outer-space-stars.jpeg") repeat center scroll;
+  background: url("outer-space-stars.jpeg") repeat center scroll;
   z-index: -1;
   position: fixed;
   display: block;
@@ -34,7 +34,7 @@ body {
   height: 100%;
 }
 #back3 {
-  background: url("http://microwavemansion.com/lasercat/spacetile.jpg") repeat center scroll;
+  background: url("spacetile.jpg") repeat center scroll;
   z-index: -2;
   position: fixed;
   display: block;
@@ -42,7 +42,7 @@ body {
   height: 100%;
 }
 #back4 {
-  background: url("http://microwavemansion.com/lasercat/stars.gif") repeat center scroll;
+  background: url("stars.gif") repeat center scroll;
   z-index: -3;
   position: fixed;
   display: block;
