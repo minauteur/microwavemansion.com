@@ -294,8 +294,8 @@
                 if (hitTest(enemy.x, enemy.y, ratBoxW, ratBoxH, cat.weapon.l1c.x, cat.weapon.l2c.y)) {
                   enemy.health = enemy.health - cat.weapon.damage;
                   degrees = degrees - 3;
-                  enemy.y = enemy.y - 3;
-                  enemy.x = enemy.x - 3;
+                  enemy.y = enemy.y - 1.75;
+                  enemy.x = enemy.x - 1;
                   laserHit.x = enemy.x - 25;
                   laserHit.y = enemy.y - 30;
                   laserHit.scaleRatio = 1.5
@@ -304,11 +304,13 @@
                 }
                 //other enemy health conditionals
                 if (enemy.health < 100 && enemy.health > 0) {
+                  enemy.y = enemy.y - .5;
                   //tie opacity to remaining health so that less health = faster rate from (.25,1)
                   enemy.opacity = oscillOpacity(enemy.health, degrees);
                 }
                 //check enemy health and remove from array if <=0
                 if (enemy.health <= 0){
+                  for (var z=0;z<4;z++){
                     var newFx = new Sprite({
                       ctx: c.getContext("2d"),
                       width: 17920,
@@ -320,12 +322,11 @@
                       loop: false
                     })
                     newFx.image.src = "deathsplosion.png"
-                    newFx.x = enemy.x - 210;
-                    newFx.y = enemy.y - 215;
-                    newFx.scaleRatio = 2;
+                    newFx.x = enemy.x - getRandomIntInc(200,220);
+                    newFx.y = enemy.y - getRandomIntInc(200,220);
+                    newFx.scaleRatio = range(1.75,2.01);
                     newFx.opacity = 0;
                     //newRat.health = 100;
-                    if (fx.length<=3){
                     fx.push(newFx);
                   }
                   enemies.splice(i, 1);
@@ -343,18 +344,16 @@
                   // if (Dist >= 400){
                   //   fx.splice(i,1);
                   // }
-                  if ((thisFx.y > c.height) || (thisFx.x < -100) || (thisFx.x> c.width) || (thisFx.frameIndex >= 70)) {
+                  if ((thisFx.y > c.height) || (thisFx.x < -100) || (thisFx.x> c.width) || (thisFx.frameIndex >= 70) || (thisFx.opacity <= 0)) {
                     fx.splice(i, 1);
                   }
                   // if ((enemy.y > c.height) || (enemy.x < -100) || (enemy.x> width)) {
                   //     fx.splice(0, fx.length);
                   // }
                   thisFx.x = thisFx.x;
-                  thisFx.y = thisFx.y+1.75;
-                  thisFx.opacity = thisFx.opacity - .02;
-                  if (thisFx.opacity <= 0){
-                    fx.splice(0,1);
-                  }
+                  thisFx.y = thisFx.y + range(1,1.75);
+                  thisFx.opacity = thisFx.opacity - range(.005, .02);
+
                   thisFx.render();
                   thisFx.update();
                 }
@@ -397,7 +396,7 @@
             x: 0,
             y: 0
         },
-        damage: 2,
+        damage: 3,
         opacity: 1,
     };
     cat.weapon.trigger = function() {
