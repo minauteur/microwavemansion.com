@@ -1,0 +1,237 @@
+body {
+    background-size: 110%;
+    background: repeating-linear-gradient(0deg, lightgoldenrodyellow 10%, transparent 20%, lightpink 90%, lightgoldenrodyellow);
+    padding-top: 10px;
+    margin: 0;
+    font: 12px/10px Arial, sans-serif;
+    overflow: hidden;
+    width: 100%;
+    height: 900px;
+}
+
+.fwd,
+.rev {
+    font-size: 15px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+.sig img {
+    float: left;
+    position: absolute;
+    bottom: 0px;
+    opacity: .5;
+}
+
+.sky {
+    left: 33%;
+    margin: 0;
+    width: 250px;
+    height: 10%;
+    position: absolute;
+    perspective: 1200px;
+}
+
+img {
+    position: absolute;
+    bottom: 0px;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    padding-right: 50px;
+}
+
+.skylands {
+    height: 100%;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 150px;
+    width: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+}
+
+.item {
+    display: block;
+    position: absolute;
+    width: 200px;
+    height: 400px;
+    line-height: 200px;
+    font-size: 5em;
+    text-align: center;
+    color: #FFF;
+    opacity: 0.95;
+    border-radius: 10px;
+    animation: preserve-3d;
+}
+
+.mangrove1 {
+    transform: translateZ(-250px) translateX(400px) translateY(60px) rotateY(0deg);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Mangrove.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation: mangrove 16s ease-in-out infinite;
+}
+
+.mangrove {
+    transform: translateZ(-250px) translateX(400px) translateY(60px) rotateY(90deg);
+    transform-origin: translateX(-25px);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Mangrove.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation: mangrove1 16s ease-in-out infinite;
+}
+
+
+/* .mangrove:hover,.mangrove1:hover {
+	box-shadow: 0px 5px 5px #999;
+	
+} */
+
+.walnut1 {
+    transform: translateZ(270px) translateX(-200px) rotateY(90deg);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Walnut.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation: walnut 15s ease-in-out infinite;
+}
+
+.walnut {
+    transform: translateZ(270px) translateX(-200px) rotateY(360deg);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Walnut.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transform-style: preserve-3d;
+    animation: walnut1 15s ease-in-out infinite;
+}
+
+.oak1 {
+    //transform: rotateY(300deg) translateZ(120);
+    //transform-origin: -250px;
+    transform: translateZ(-120px) rotateY(300deg);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Oak.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation: oak 12s ease-in-out infinite;
+}
+
+.oak {
+    transform: translateZ(-120px) rotateY(210deg) scaleX(1) scaleY(1);
+    background: transparent;
+    background-image: url(https://minauteur.github.io/microwavemansion.com/Oak.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    animation: oak1 12s ease-in-out infinite;
+}
+
+.rev,
+.fwd {
+    color: #FFF;
+    position: absolute;
+    top: 100px;
+    padding: 1em 2em;
+    cursor: pointer;
+    background: #CCC;
+    opacity: .45;
+    border-radius: 5px;
+    border-top: 1px solid #FFF;
+    box-shadow: 0px 5px 5px #999;
+    transition: box-shadow 0.1s, top 0.1s;
+}
+
+.fwd:hover,
+.rev:hover {
+    color: lightblue;
+}
+
+.fwd:active,
+.rev:active {
+    top: 104px;
+    box-shadow: 0 1px 0 #999;
+}
+
+.fwd {
+    right: 5em;
+}
+
+.rev {
+    left: 5em;
+}
+
+@keyframes mangrove {
+    0% {
+        transform: translateZ(170px) translateX(-175px) translateY(20px) rotateY(350deg);
+    }
+    50% {
+        transform: translateZ(150px) translateX(-200px) translateY(-20px) rotateY(360deg);
+    }
+    100% {
+        transform: translateZ(170px) translateX(-175px) translateY(20px) rotateY(350deg);
+    }
+}
+
+@keyframes mangrove1 {
+    0% {
+        transform: translateZ(170px) translateX(-175px) translateY(20px) rotateY(80deg);
+    }
+    50% {
+        transform: translateZ(150px) translateX(-200px) translateY(-20px) rotateY(90deg);
+    }
+    100% {
+        transform: translateZ(170px) translateX(-175px) translateY(20px) rotateY(80deg);
+    }
+}
+
+@keyframes walnut {
+    0% {
+        transform: translateZ(-500px) translateX(120px) translateY(50px) rotateY(90deg);
+    }
+    50% {
+        transform: translateZ(-520px) translateX(120px) translateY(20px) rotateY(110deg);
+    }
+    100% {
+        transform: translateZ(-500px) translateX(120px) translateY(50px) rotateY(90deg);
+    }
+}
+
+@keyframes walnut1 {
+    0% {
+        transform: translateZ(-500px) translateX(120px) translateY(50px) rotateY(180deg);
+    }
+    50% {
+        transform: translateZ(-520px) translateX(120px) translateY(20px) rotateY(200deg);
+    }
+    100% {
+        transform: translateZ(-500px) translateX(120px) translateY(50px) rotateY(180deg);
+    }
+}
+
+@keyframes oak {
+    0% {
+        transform-origin: translateX(-25px);
+        transform: translateZ(235px) translateX(400px) translateY(20px) rotateY(0deg);
+    }
+    50% {
+        transform: translateZ(270px) translateX(400px) translateY(-20px) rotateY(10deg);
+    }
+    100% {
+        transform: translateZ(235px) translateX(400px) translateY(20px) rotateY(0deg);
+    }
+}
+
+@keyframes oak1 {
+    0% {
+        transform: translateZ(235px) translateX(400px) translateY(20px) rotateY(90deg);
+    }
+    50% {
+        transform: translateZ(270px) translateX(400px) translateY(-20px) rotateY(100deg);
+    }
+    100% {
+        transform: translateZ(235px) translateX(400px) translateY(20px) rotateY(90deg);
+    }
+}

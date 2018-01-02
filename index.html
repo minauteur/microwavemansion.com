@@ -1,67 +1,164 @@
-
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Microwave Mansion</title>
-		<link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
-		<style type="text/css">
-			@-webkit-keyframes dots {
-				0% {background-position: 0px;}
-				100% {background-position: 30px;}
-			}
-			#splashtext {
-				font-family: 'Poiret One', cursive;
-				font-size: 30pt;
-				width: 100%;
-				height: 20%;
-				margin: auto;
-				position: absolute;
-				top:40%;
-				text-align: center;
-			}
-			span {
-				background: linear-gradient(to right, transparent 50%, black 50%);
-				color: transparent;
-				-webkit-background-clip: text;
-				-webkit-animation: dots 1s infinite steps(25);
-				padding-right: 30px;
-				margin-right: -40px;
-			}
-			#container {
-				position: absolute;
-				top: 0px;
-				left: 0px;
-				width: 100%;
-				height: 100%;
-				background: linear-gradient(128deg, #6e988d, #859fda, #bcda85, #c0a1cf, #cfcda1);
-				background-size: 1000% 1000%;
-				display:flex;
-				align-items: center;
-				-webkit-animation: ColorFade 22s ease infinite;
-				-moz-animation: ColorFade 22s ease infinite;
-				animation: ColorFade 22s ease infinite;
-			}
-			@-webkit-keyframes ColorFade {
-				0% {background-position:9% 0%}
-				50% {background-position:92% 100%}
-				100% {background-position:9% 0%}
-			}
-			@-moz-keyframes ColorFade {
-				0% {background-position:9% 0%}
-				50% {background-position:92% 100%}
-				100% {background-position:9% 0%}
-			}
-			@keyframes ColorFade {
-				0% {background-position:9% 0%}
-				50% {background-position:92% 100%}
-				100% {background-position:9% 0%}
-			}
-		</style>
-	</head>
-	<body>
-		<div id="container">
-			<p id="splashtext">Microwaving<span>...</span></p>
-		</div>
-	</body>
+
+<head>
+    <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Microwave Mansion</title>
+    <link href="https://fonts.googleapis.com/css?family=Poiret+One" rel="stylesheet">
+    <style type="text/css">
+        body {
+            font-family: 'Press Start 2P', cursive;
+        }
+        
+        a {
+            z-index: 1;
+        }
+        
+        @-webkit-keyframes dots {
+            0% {
+                background-position: 0px;
+            }
+            100% {
+                background-position: 30px;
+            }
+        }
+        
+        #splashtext {
+            font-family: 'Poiret One', cursive;
+            font-size: 30pt;
+            width: 100%;
+            height: 20%;
+            margin: auto;
+            position: absolute;
+            top: 40%;
+            text-align: center;
+        }
+        
+        span {
+            background: linear-gradient(to right, transparent 50%, black 50%);
+            color: transparent;
+            -webkit-background-clip: text;
+            -webkit-animation: dots 1s infinite steps(25);
+            padding-right: 30px;
+            margin-right: -40px;
+        }
+        
+        #container {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(128deg, #6e988d, #859fda, #bcda85, #c0a1cf, #cfcda1);
+            background-size: 1000% 1000%;
+            display: flex;
+            align-items: center;
+            -webkit-animation: ColorFade 22s ease infinite;
+            -moz-animation: ColorFade 22s ease infinite;
+            animation: ColorFade 22s ease infinite;
+        }
+        
+        @-webkit-keyframes ColorFade {
+            0% {
+                background-position: 9% 0%
+            }
+            50% {
+                background-position: 92% 100%
+            }
+            100% {
+                background-position: 9% 0%
+            }
+        }
+        
+        @-moz-keyframes ColorFade {
+            0% {
+                background-position: 9% 0%
+            }
+            50% {
+                background-position: 92% 100%
+            }
+            100% {
+                background-position: 9% 0%
+            }
+        }
+        
+        @keyframes ColorFade {
+            0% {
+                background-position: 9% 0%
+            }
+            50% {
+                background-position: 92% 100%
+            }
+            100% {
+                background-position: 9% 0%
+            }
+        }
+        
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        
+        #blinker {
+            z-index: 1;
+            position: absolute;
+            top: 55%;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            height: 90px;
+            color: #fff;
+            width: 100%;
+            text-align: center;
+            margin: auto;
+            font-size: 40px;
+            line-height: 40px;
+            letter-spacing: 5px;
+            text-shadow: -2px 0 0 #fdff2a, -4px 0 0 #df4a42, 2px 0 0 #91fcfe, 4px 0 0 #4405fc;
+            animation: blink 1s steps(4, start) infinite;
+            z-index: -1;
+        }
+        
+        @-moz-keyframes blink {
+            to {
+                visibility: hidden;
+            }
+        }
+        
+        @-webkit-keyframes blink {
+            to {
+                visibility: hidden;
+            }
+        }
+        
+        @-o-keyframes blink {
+            to {
+                visibility: hidden;
+            }
+        }
+        
+        @keyframes blink {
+            to {
+                visibility: hidden;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <p id="splashtext">Microwaving<span>...</span></p>
+        <a href="/lasercat">
+            <div id="blinker">laserCat!</div>
+        </a>
+        <br>
+        <a href="/skylands">
+            <img src="/skylands/38L.svg" title="sigloop">
+        </a>
+    </div>
+</body>
+
 </html>

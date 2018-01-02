@@ -152,7 +152,7 @@
 	//on enemy hit and death, respectively;
 	laserHitImage = new Image();
 	laserHitImage.src =
-		"laserHitpx.png";
+		"https://minauteur.github.io/microwavemansion.com/lasercat/laserHitpx.png";
 	laserHit = Sprite({
 		ctx: c.getContext("2d"),
 		width: 1500,
@@ -165,7 +165,7 @@
 	});
 	deathSplodeImage = new Image();
 	deathSplodeImage.src =
-		"deathsplosion.png";
+		"https://minauteur.github.io/microwavemansion.com/lasercat/deathsplosion.png";
 	deathSplode = Sprite({
 		ctx: c.getContext("2d"),
 		width: 17920,
@@ -182,7 +182,7 @@
 		this.image = new Image();
 		this.image.src =
 			imgsrc ||
-			"rat.png";
+			"https://minauteur.github.io/microwavemansion.com/lasercat/rat.png";
 		this.x = x || 0;
 		this.y = y || 0;
 		this.width = width || 100;
@@ -206,7 +206,7 @@
 	}
 	cat = new Player(
 		"cat",
-		"cat.gif",
+		"https://minauteur.github.io/microwavemansion.com/lasercat/cat.gif",
 		width - 546,
 		height - 562,
 		546,
@@ -358,7 +358,7 @@
 							loop: false
 						});
 						newFx.image.src =
-		"deathsplosion.png";
+		"https://minauteur.github.io/microwavemansion.com/lasercat/deathsplosion.png";
 						newFx.x =	enemy.x - getRandomIntInc(180, 220);
 						newFx.y =	enemy.y - getRandomIntInc(200, 240);
 						newFx.scaleRatio = range(1.6, 2.01);
@@ -593,3 +593,4 @@
 	animate();
 	window.addEventListener("resize", resizeCanvas, false);
 })();
+
