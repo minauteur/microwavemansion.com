@@ -165,6 +165,7 @@
             /* z-index: 999; */
             /* transform-origin: 50%; */
             transform: rotateX(180deg);
+            -webkit-backface-visibility: hidden !important;
             backface-visibility: hidden !important;
             font-family: Verdana;
         }
@@ -182,6 +183,8 @@
         .flippable {
             position: relative;
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
+            -webkit-transition: 0.5s;
             /* transform-origin: 50%; */
             /* backface-visibility: hidden; */
             transition: 0.5s;
@@ -189,6 +192,7 @@
         
         .flipme {
             /* position: relative; */
+            -webkit-transform-style: preserve-3d;
             transform-style: preserve-3d;
             transition: 0.5s;
             transform: rotateX(180deg);
@@ -200,6 +204,7 @@
             font-family: Verdana;
             transform: rotateX(0deg);
             position: relative;
+            -webkit-backface-visibility: hidden !important;
             backface-visibility: hidden !important;
             -moz-backface-visibility: hidden !important;
         }
@@ -216,16 +221,107 @@
         a {
             text-decoration: aqua;
             color: aqua;
+            cursor: pointer;
         }
         
         .flipme>#front,
         .flipme>#back {
+            -webkit-backface-visibility: hidden !important;
             backface-visibility: hidden !important;
+        }
+            a.activator{
+            width:153px;
+            height:150px;
+            position:absolute;
+            top:0px;
+            left:0px;
+            background:transparent url(clickme.png) no-repeat top left;
+            z-index:1;
+            cursor:pointer;
+        }
+        .overlay{
+    background:transparent url(images/overlay.png) repeat top left;
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index:100;
+}
+.box{
+    font-size:10pt;
+    position:fixed;
+    top:-900px;
+    left:30%;
+    right:30%;
+    background-color:#fff;
+    color:#7F7F7F;
+    padding:20px;
+    border:2px solid #ccc;
+    -moz-border-radius: 20px;
+    -webkit-border-radius:20px;
+    -khtml-border-radius:20px;
+    -moz-box-shadow: 0 1px 5px #333;
+    -webkit-box-shadow: 0 1px 5px #333;
+    z-index:101;
+}
+.box h4{
+    border-bottom: 1px dashed #7F7F7F;
+    margin:-20px -20px 0px -20px;
+    padding:10px;
+    background-color:#FFEFEF;
+    color:#EF7777;
+    -moz-border-radius:20px 20px 0px 0px;
+    -webkit-border-top-left-radius: 20px;
+    -webkit-border-top-right-radius: 20px;
+    -khtml-border-top-left-radius: 20px;
+    -khtml-border-top-right-radius: 20px;
+}
+        a.boxclose{
+            float:right;
+            width:26px;
+            height:26px;
+            background:transparent url(images/cancel.png) repeat top left;
+            margin-top:-30px;
+            margin-right:-30px;
+            cursor:pointer;
         }
     </style>
 </head>
 
 <body>
+        <div class="content">
+            <!-- The activator -->
+            <a class="activator" id="activator"></a>
+        </div>
+<div class="overlay" id="overlay" style="display:none;"></div>
+
+<div class="box" id="box">
+    <a class="boxclose" id="boxclose"></a>
+    <h1><img src="images/hs.png" height="40px" width="40px" alt="headshot"></img>&nbsp;About Me!</h1>
+    <p>
+        Hi There!
+        I'm Thom Pennington, the person programming the things on this site! <br>
+    </p>
+</h6>
+<p>
+    <ul>
+        <strong style="color:green;">Hiring?</strong></h4>
+        <p style="font-size:8pt;">For more examples, current projects, and works-in-progress be sure to check me out on...</p>
+        <li style="font-size:9pt;"><a href="https://github.com/minauteur">Github</a></li>
+        <li style="font-size:9pt;"><a href="https://codepen.io/minauteur">Codepen</a></li>
+        <li style="font-size:9pt;"><a href="https://www.linkedin.com/in/thom-pennington-50080155/">LinkedIn</a></li>
+        <li style="font-size:9pt;"><a href="mailto:thompennington@gmail.com">Google Hangouts/Gmail</a></li>
+        <li style="font-size:9pt;">or, alternatively, email me directly at this domain: <a href="mailto:me@thompennington.com">HERE!</a>
+    </li>
+</p>
+<p><br>
+    <h4><strong>A NOTE:</strong></h4>
+     
+    <p style="font-size: 8pt;"> I use this domain as a kind of sandbox for various works-in-progress and other personal projects outside of the work that I do for clients, so the contents of this site don't necessarily reflect the full range of skills and experience I might offer in a professional context. I would be happy to provide references and/or examples from past clients and projects pending their approval upon request.<br>
+    </p>
+</p>
+</div>
     <div id="container">
         <p id="splashtext">Microwaving<span id="elipses">...</span></p>
         <a href="/lasercat">
@@ -250,6 +346,19 @@
         $(".flippable").click(function() {
             $(this).toggleClass("flipme");
         });
+        $(function() {
+    $('#activator').click(function(){
+        $('#overlay').fadeIn('fast',function(){
+            $('#box').animate({'top':'100px'},500);
+        });
+    });
+    $('#boxclose').click(function(){
+        $('#box').animate({'top':'-900px'},500,function(){
+            $('#overlay').fadeOut('fast');
+        });
+    });
+
+});
     </script>
 </body>
 
